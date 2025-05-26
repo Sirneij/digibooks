@@ -1,4 +1,7 @@
+import { browser } from '$app/environment';
 import type { Book } from '$lib/server/db/schema';
+import { cartState } from '$lib/states/carts.svelte';
+import type { CartItem } from '$lib/types/cart';
 
 /**
  * Format a number as currency
@@ -24,5 +27,5 @@ export const formatMoney = (amount: number | string | null | undefined): string 
  * @param {Book} book - The book to add to the cart
  */
 export const addToCart = (book: Book) => {
-	console.log('Adding to cart:', book.title);
+	cartState.addItem(book);
 };

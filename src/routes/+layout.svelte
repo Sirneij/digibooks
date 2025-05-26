@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { fade, fly } from 'svelte/transition';
 	import '../app.css';
+	import { cartState } from '$lib/states/carts.svelte';
 
 	let { children } = $props();
 	let isMobileMenuOpen = $state(false);
@@ -23,7 +24,7 @@
 	const navigation = [
 		{ href: '/', label: 'Books', icon: 'book' },
 		{ href: '/cart', label: 'Cart', icon: 'cart' },
-		{ href: '/my-purchases', label: 'My Purchases', icon: 'purchases' }
+		{ href: '/purchases', label: 'My Purchases', icon: 'purchases' }
 	];
 
 	function isActivePath(href: string) {
@@ -104,14 +105,23 @@
 										/>
 									</svg>
 								{:else if item.icon === 'cart'}
-									<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m4.5-5a2 2 0 104 0m-4 0a2 2 0 014 0"
-										/>
-									</svg>
+									<div class="relative">
+										<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m4.5-5a2 2 0 104 0m-4 0a2 2 0 014 0"
+											/>
+										</svg>
+										{#if cartState.items.length > 0}
+											<span
+												class="bg-accent absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white"
+											>
+												{cartState.getTotalItems()}
+											</span>
+										{/if}
+									</div>
 								{:else if item.icon === 'purchases'}
 									<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 										<path
@@ -194,14 +204,23 @@
 										/>
 									</svg>
 								{:else if item.icon === 'cart'}
-									<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m4.5-5a2 2 0 104 0m-4 0a2 2 0 014 0"
-										/>
-									</svg>
+									<div class="relative">
+										<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m4.5-5a2 2 0 104 0m-4 0a2 2 0 014 0"
+											/>
+										</svg>
+										{#if cartState.items.length > 0}
+											<span
+												class="bg-accent absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full text-xs text-white"
+											>
+												{cartState.getTotalItems()}
+											</span>
+										{/if}
+									</div>
 								{:else if item.icon === 'purchases'}
 									<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 										<path
@@ -238,7 +257,7 @@
 		></div>
 
 		<div class="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
-			<div class="grid grid-cols-1 gap-8 md:grid-cols-4">
+			<div class="grid grid-cols-1 gap-8 md:grid-cols-3">
 				<!-- Brand Section -->
 				<div class="md:col-span-2">
 					<div class="mb-4 flex items-center space-x-2">
@@ -275,41 +294,6 @@
 						{/each}
 					</ul>
 				</div>
-
-				<!-- Support -->
-				<div>
-					<h3 class="text-content mb-4 font-semibold">Support</h3>
-					<ul class="space-y-2 text-sm">
-						<li>
-							<a
-								href="/#"
-								class="text-content-muted hover:text-primary transition-colors duration-200"
-								>Help Center</a
-							>
-						</li>
-						<li>
-							<a
-								href="/#"
-								class="text-content-muted hover:text-primary transition-colors duration-200"
-								>Contact Us</a
-							>
-						</li>
-						<li>
-							<a
-								href="/#"
-								class="text-content-muted hover:text-primary transition-colors duration-200"
-								>Privacy Policy</a
-							>
-						</li>
-						<li>
-							<a
-								href="/#"
-								class="text-content-muted hover:text-primary transition-colors duration-200"
-								>Terms of Service</a
-							>
-						</li>
-					</ul>
-				</div>
 			</div>
 
 			<!-- Copyright -->
@@ -319,7 +303,14 @@
 						&copy; {new Date().getFullYear()} DigiBooks. All rights reserved.
 					</p>
 					<p class="text-content-muted mt-2 text-sm md:mt-0">
-						Made with ❤️ for book lovers everywhere
+						Made with ❤️ for book lovers everywhere by <a
+							href="https://johnowolabiidogun.dev"
+							class="text-primary hover:underline"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							John Owolabi Idogun
+						</a>.
 					</p>
 				</div>
 			</div>

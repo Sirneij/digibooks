@@ -1,132 +1,265 @@
 <script lang="ts">
+	import type { Book } from '$lib/server/db/schema';
 	import { formatMoney } from '$lib/utils/helpers';
-	import { fly } from 'svelte/transition';
+	import { scale } from 'svelte/transition';
 
 	type Props = {
-		book: {
-			id: number;
-			title: string;
-			author: string;
-			description: string | null;
-			coverImageUrl: string | null;
-			priceInCents: number;
-		};
+		book: Book;
 		addToCart?: (book: Props['book']) => void;
 		viewMode?: 'grid' | 'list';
 	};
 
-	let { book, addToCart, viewMode = 'grid' }: Props = $props();
-	let isHovered = $state(false);
+	let { book, addToCart, viewMode = 'list' }: Props = $props();
+	let isHovered = $state(false),
+		isLoading = $state(false);
+
+	async function handleAddToCart() {
+		if (!addToCart) return;
+		isLoading = true;
+		addToCart(book);
+		setTimeout(() => {
+			isLoading = false;
+		}, 500);
+	}
 </script>
 
 {#if viewMode === 'list'}
-	<!-- List View -->
+	<!-- Enhanced List View -->
 	<div
-		class="border-border group flex overflow-hidden rounded-xl border bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md"
+		class="group relative overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition-all duration-300 hover:shadow-xl hover:ring-slate-200"
 		onmouseenter={() => (isHovered = true)}
 		onmouseleave={() => (isHovered = false)}
 		role="button"
 		tabindex="0"
 	>
-		<a href="/{book.id}" class="flex-shrink-0">
-			<img
-				src={book.coverImageUrl || 'https://placehold.co/300x450/e2e8f0/cbd5e0?text=No+Image'}
-				alt="Cover of {book.title}"
-				class="h-24 w-16 rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
-			/>
-		</a>
+		<!-- Gradient overlay -->
+		<div
+			class="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-purple-50/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+		></div>
 
-		<div class="ml-4 flex flex-1 flex-col justify-between">
-			<div>
-				<h3 class="text-content mb-1 text-lg font-semibold">
-					<a href="/{book.id}" class="hover:text-primary transition-colors duration-200">
-						{book.title}
-					</a>
-				</h3>
-				<p class="text-content-muted mb-2 text-sm">by {book.author}</p>
-				{#if book.description}
-					<p class="text-content-muted line-clamp-2 text-sm">
-						{book.description}
-					</p>
-				{/if}
+		<div class="relative flex p-6">
+			<!-- Book Cover with enhanced styling -->
+			<div class="relative flex-shrink-0">
+				<a href="/{book.id}" class="block">
+					<div
+						class="relative overflow-hidden rounded-xl shadow-lg transition-transform duration-300 group-hover:scale-105"
+					>
+						<img
+							src={book.coverImageUrl || 'https://placehold.co/300x450/6366f1/white?text=📚'}
+							alt="Cover of {book.title}"
+							class="h-32 w-24 object-cover"
+						/>
+						<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+					</div>
+				</a>
 			</div>
 
-			<div class="mt-4 flex items-center justify-between">
-				<p class="text-primary text-xl font-bold">{formatMoney(book.priceInCents)}</p>
-				<button
-					onclick={() => addToCart && addToCart(book)}
-					class="bg-primary hover:bg-primary-hover focus:ring-primary/50 rounded-lg px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2"
-				>
-					Add to Cart
-				</button>
+			<!-- Content -->
+			<div class="ml-6 flex flex-1 flex-col justify-between">
+				<div>
+					<h3 class="mb-2 line-clamp-2 text-xl font-bold text-slate-900">
+						<a href="/{book.id}" class="transition-colors duration-200 hover:text-blue-600">
+							{book.title}
+						</a>
+					</h3>
+					<p class="mb-3 text-sm font-medium text-slate-600">by {book.author}</p>
+					{#if book.description}
+						<p class="line-clamp-2 text-sm leading-relaxed text-slate-500">
+							{book.description}
+						</p>
+					{/if}
+				</div>
+
+				<div class="mt-4 flex items-center justify-between">
+					<div class="flex items-baseline space-x-1">
+						<span class="text-2xl font-bold text-slate-900">{formatMoney(book.priceInCents)}</span>
+					</div>
+
+					<button
+						onclick={handleAddToCart}
+						disabled={isLoading}
+						class="group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:cursor-not-allowed disabled:opacity-50"
+					>
+						<span class="relative z-10 flex items-center space-x-2">
+							{#if isLoading}
+								<svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+									<circle
+										class="opacity-25"
+										cx="12"
+										cy="12"
+										r="10"
+										stroke="currentColor"
+										stroke-width="4"
+									></circle>
+									<path
+										class="opacity-75"
+										fill="currentColor"
+										d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+									></path>
+								</svg>
+								<span>Adding...</span>
+							{:else}
+								<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+									/>
+								</svg>
+								<span>Add to Cart</span>
+							{/if}
+						</span>
+						<div
+							class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 transition-opacity duration-300 group-hover/btn:opacity-100"
+						></div>
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
 {:else}
-	<!-- Grid View -->
+	<!-- Enhanced Grid View -->
 	<div
-		class="border-border group flex h-full flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+		class="group relative h-full overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition-all duration-500 hover:shadow-2xl hover:ring-slate-200"
 		onmouseenter={() => (isHovered = true)}
 		onmouseleave={() => (isHovered = false)}
 		role="button"
 		tabindex="0"
 	>
-		<!-- Book Cover -->
+		<!-- Animated background gradient -->
+		<div
+			class="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-purple-50/50 to-pink-50/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+		></div>
+
+		<!-- Book Cover Section -->
 		<div class="relative overflow-hidden">
 			<a href="/{book.id}" class="block">
-				<img
-					src={book.coverImageUrl || 'https://placehold.co/300x450/e2e8f0/cbd5e0?text=No+Image'}
-					alt="Cover of {book.title}"
-					class="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-110"
-				/>
+				<div class="relative aspect-[3/4] overflow-hidden">
+					<img
+						src={book.coverImageUrl || 'https://placehold.co/300x450/6366f1/white?text=📚'}
+						alt="Cover of {book.title}"
+						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+					/>
+					<!-- Subtle overlay -->
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+					></div>
+				</div>
 			</a>
 
-			<!-- Overlay on hover -->
+			<!-- Floating quick add button -->
 			{#if isHovered}
-				<div
-					class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
-					in:fly={{ y: 20, duration: 200 }}
-				></div>
-			{/if}
-
-			<!-- Quick add button on hover -->
-			{#if isHovered}
-				<button
-					onclick={() => addToCart && addToCart(book)}
-					class="text-primary hover:bg-primary absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white px-4 py-2 text-sm font-medium shadow-lg transition-all duration-200 hover:text-white"
-					in:fly={{ y: 10, duration: 200, delay: 100 }}
-				>
-					Quick Add
-				</button>
+				<div class="absolute right-4 top-4" in:scale={{ duration: 300, start: 0.8 }}>
+					<button
+						onclick={handleAddToCart}
+						disabled={isLoading}
+						class="group/quick relative overflow-hidden rounded-full bg-white/90 p-3 shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-white hover:shadow-xl"
+					>
+						{#if isLoading}
+							<svg class="h-5 w-5 animate-spin text-blue-600" fill="none" viewBox="0 0 24 24">
+								<circle
+									class="opacity-25"
+									cx="12"
+									cy="12"
+									r="10"
+									stroke="currentColor"
+									stroke-width="4"
+								></circle>
+								<path
+									class="opacity-75"
+									fill="currentColor"
+									d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+								></path>
+							</svg>
+						{:else}
+							<svg
+								class="h-5 w-5 text-blue-600 transition-transform duration-300 group-hover/quick:scale-110"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+								/>
+							</svg>
+						{/if}
+					</button>
+				</div>
 			{/if}
 		</div>
 
-		<!-- Book Info -->
-		<div class="flex flex-grow flex-col p-4">
-			<h3 class="text-content mb-1 line-clamp-2 text-lg font-semibold">
-				<a href="/{book.id}" class="hover:text-primary transition-colors duration-200">
+		<!-- Content Section -->
+		<div class="relative flex flex-col p-6">
+			<h3 class="mb-2 line-clamp-2 text-lg font-bold leading-tight text-slate-900">
+				<a href="/{book.id}" class="transition-colors duration-200 hover:text-blue-600">
 					{book.title}
 				</a>
 			</h3>
-			<p class="text-content-muted mb-3 text-sm">by {book.author}</p>
+
+			<p class="mb-3 text-sm font-medium text-slate-600">by {book.author}</p>
 
 			{#if book.description}
-				<p class="text-content-muted mb-4 line-clamp-3 text-sm">
+				<p class="mb-4 line-clamp-3 flex-grow text-sm leading-relaxed text-slate-500">
 					{book.description}
 				</p>
 			{/if}
 
-			<!-- Price and Cart Button -->
-			<div class="mt-auto">
-				<div class="mb-3 flex items-center justify-between">
-					<p class="text-primary text-xl font-bold">{formatMoney(book.priceInCents)}</p>
+			<!-- Price and Action Section -->
+			<div class="mt-auto space-y-4">
+				<div class="flex items-center justify-between">
+					<div class="flex items-baseline space-x-1">
+						<span class="text-2xl font-bold text-slate-900">{formatMoney(book.priceInCents)}</span>
+					</div>
 				</div>
 
 				<button
-					onclick={() => addToCart && addToCart(book)}
-					class="bg-primary hover:bg-primary-hover focus:ring-primary/50 w-full rounded-lg py-2.5 text-sm font-medium text-white transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2"
+					onclick={handleAddToCart}
+					disabled={isLoading}
+					class="group/btn relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-blue-700 hover:to-purple-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:cursor-not-allowed disabled:opacity-50"
 				>
-					Add to Cart
+					<span class="relative z-10 flex items-center justify-center space-x-2">
+						{#if isLoading}
+							<svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+								<circle
+									class="opacity-25"
+									cx="12"
+									cy="12"
+									r="10"
+									stroke="currentColor"
+									stroke-width="4"
+								></circle>
+								<path
+									class="opacity-75"
+									fill="currentColor"
+									d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+								></path>
+							</svg>
+							<span>Adding to Cart...</span>
+						{:else}
+							<svg
+								class="h-4 w-4 transition-transform duration-300 group-hover/btn:rotate-180"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m4.5-5a2 2 0 104 0m-4 0a2 2 0 014 0"
+								/>
+							</svg>
+							<span>Add to Cart</span>
+						{/if}
+					</span>
+					<!-- Shimmer effect -->
+					<div
+						class="absolute inset-0 -skew-x-12 transform bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-300 group-hover/btn:opacity-100"
+					></div>
 				</button>
 			</div>
 		</div>
