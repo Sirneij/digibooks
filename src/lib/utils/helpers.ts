@@ -1,3 +1,5 @@
+import type { Book } from '$lib/server/db/schema';
+
 /**
  * Format a number as currency
  *
@@ -14,4 +16,13 @@ export const formatMoney = (amount: number | string | null | undefined): string 
 		currency: 'USD',
 		currencyDisplay: 'narrowSymbol'
 	});
+};
+
+/**
+ * Add a book to the cart
+ *
+ * @param {Book} book - The book to add to the cart
+ */
+export const addToCart = (book: Book) => {
+	console.log('Adding to cart:', book.title);
 };

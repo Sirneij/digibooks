@@ -1,2 +1,63 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
+
+@layer base {
+	@theme {
+		--color-primary: rgb(29, 78, 216); /* Blue-700 */
+		--color-primary-hover: rgb(30, 64, 175); /* Blue-800 */
+		--color-secondary: rgb(234, 88, 12); /* Orange-600 */
+		--color-accent: rgb(217, 70, 239); /* Fuchsia-500 */
+		--color-content: rgb(17, 24, 39); /* Formerly text-base, Gray-900 */
+		--color-content-muted: rgb(55, 65, 81); /* Formerly text-muted, Gray-700 */
+		--color-surface: rgb(249, 250, 251); /* Formerly bg-base, Gray-50 */
+		--color-surface-muted: rgb(229, 231, 235); /* Formerly bg-muted, Gray-200 */
+		--color-border: rgb(209, 213, 219); /* Gray-300 */
+
+		--font-serif:
+			system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+			'Open Sans', 'Helvetica Neue', sans-serif;
+	}
+
+	html,
+	body {
+		@apply font-sans; /* Assuming --font-serif is your sans-serif stack */
+		/* For background and text color, use arbitrary values with your CSS variables */
+		@apply bg-surface text-content;
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes fade-out {
+		to {
+			opacity: 0;
+		}
+	}
+
+	@keyframes slide-from-right {
+		from {
+			transform: translateX(30px);
+		}
+	}
+
+	@keyframes slide-to-left {
+		to {
+			transform: translateX(-30px);
+		}
+	}
+
+	:root::view-transition-old(root) {
+		animation:
+			90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+	}
+
+	:root::view-transition-new(root) {
+		animation:
+			210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+	}
+}

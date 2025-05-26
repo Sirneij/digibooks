@@ -13,6 +13,7 @@ export const books = sqliteTable('books', {
 
 export const purchases = sqliteTable('purchases', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
+	quantity: integer('quantity').notNull().default(1),
 	customerEmail: text('customer_email').notNull(),
 	bookId: integer('book_id')
 		.notNull()
@@ -22,3 +23,8 @@ export const purchases = sqliteTable('purchases', {
 		.default(sql`(strftime('%s', 'now'))`),
 	stripeCheckoutSessionId: text('stripe_checkout_session_id').notNull().unique()
 });
+
+export type Book = typeof books.$inferSelect;
+export type Purchase = typeof purchases.$inferSelect;
+export type BookInsert = typeof books.$inferInsert;
+export type PurchaseInsert = typeof purchases.$inferInsert;
