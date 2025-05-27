@@ -2,6 +2,7 @@
 	import type { Book } from '$lib/server/db/schema';
 	import { formatMoney } from '$lib/utils/helpers';
 	import { scale } from 'svelte/transition';
+	import { loader, plus } from './utils/Icons.svelte';
 
 	type Props = {
 		book: Book;
@@ -78,35 +79,20 @@
 					<button
 						onclick={handleAddToCart}
 						disabled={isLoading}
-						class="group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl focus:ring-2 focus:ring-blue-500/50 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+						class="group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						<span class="relative z-10 flex items-center space-x-2">
 							{#if isLoading}
-								<svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-									<circle
-										class="opacity-25"
-										cx="12"
-										cy="12"
-										r="10"
-										stroke="currentColor"
-										stroke-width="4"
-									></circle>
-									<path
-										class="opacity-75"
-										fill="currentColor"
-										d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-									></path>
-								</svg>
+								{@render loader({
+									class: 'h-4 w-4 animate-spin',
+									'aria-hidden': 'true'
+								})}
 								<span>Adding...</span>
 							{:else}
-								<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-									/>
-								</svg>
+								{@render plus({
+									class: 'h-4 w-4',
+									'aria-hidden': 'true'
+								})}
 								<span>Add to Cart</span>
 							{/if}
 						</span>
@@ -150,42 +136,23 @@
 
 			<!-- Floating quick add button -->
 			{#if isHovered}
-				<div class="absolute top-4 right-4" in:scale={{ duration: 300, start: 0.8 }}>
+				<div class="absolute right-4 top-4" in:scale={{ duration: 300, start: 0.8 }}>
 					<button
 						onclick={handleAddToCart}
 						disabled={isLoading}
 						class="group/quick relative overflow-hidden rounded-full bg-white/90 p-3 shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-white hover:shadow-xl"
 					>
 						{#if isLoading}
-							<svg class="h-5 w-5 animate-spin text-blue-600" fill="none" viewBox="0 0 24 24">
-								<circle
-									class="opacity-25"
-									cx="12"
-									cy="12"
-									r="10"
-									stroke="currentColor"
-									stroke-width="4"
-								></circle>
-								<path
-									class="opacity-75"
-									fill="currentColor"
-									d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-								></path>
-							</svg>
+							{@render loader({
+								class: 'h-5 w-5 animate-spin text-blue-600',
+								'aria-hidden': 'true'
+							})}
 						{:else}
-							<svg
-								class="h-5 w-5 text-blue-600 transition-transform duration-300 group-hover/quick:scale-110"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-								/>
-							</svg>
+							{@render plus({
+								class:
+									'h-5 w-5 text-blue-600 transition-transform duration-300 group-hover/quick:scale-110',
+								'aria-hidden': 'true'
+							})}
 						{/if}
 					</button>
 				</div>
@@ -194,7 +161,7 @@
 
 		<!-- Content Section -->
 		<div class="relative flex flex-col p-6">
-			<h3 class="mb-2 line-clamp-2 text-lg leading-tight font-bold text-slate-900">
+			<h3 class="mb-2 line-clamp-2 text-lg font-bold leading-tight text-slate-900">
 				<a href="/{book.id}" class="transition-colors duration-200 hover:text-blue-600">
 					{book.title}
 				</a>
@@ -219,40 +186,20 @@
 				<button
 					onclick={handleAddToCart}
 					disabled={isLoading}
-					class="group/btn relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-blue-700 hover:to-purple-700 hover:shadow-xl focus:ring-2 focus:ring-blue-500/50 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+					class="group/btn relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-blue-700 hover:to-purple-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:cursor-not-allowed disabled:opacity-50"
 				>
 					<span class="relative z-10 flex items-center justify-center space-x-2">
 						{#if isLoading}
-							<svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-								<circle
-									class="opacity-25"
-									cx="12"
-									cy="12"
-									r="10"
-									stroke="currentColor"
-									stroke-width="4"
-								></circle>
-								<path
-									class="opacity-75"
-									fill="currentColor"
-									d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-								></path>
-							</svg>
+							{@render loader({
+								class: 'h-4 w-4 animate-spin',
+								'aria-hidden': 'true'
+							})}
 							<span>Adding to Cart...</span>
 						{:else}
-							<svg
-								class="h-4 w-4 transition-transform duration-300 group-hover/btn:rotate-180"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m4.5-5a2 2 0 104 0m-4 0a2 2 0 014 0"
-								/>
-							</svg>
+							{@render plus({
+								class: 'h-4 w-4 transition-transform duration-300 group-hover/btn:rotate-180',
+								'aria-hidden': 'true'
+							})}
 							<span>Add to Cart</span>
 						{/if}
 					</span>

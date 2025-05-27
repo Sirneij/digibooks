@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import type { PageData } from './$types';
+	import { close, grid, list, search } from '$lib/components/utils/Icons.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -74,41 +75,28 @@
 		<form onsubmit={handleSearch} class="space-y-4">
 			<!-- Search -->
 			<div class="relative">
-				<svg
-					class="text-content-muted absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-					/>
-				</svg>
+				{@render search({
+					class: 'text-content-muted absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2',
+					'aria-hidden': 'true'
+				})}
 				<input
 					name="search"
 					bind:value={searchInput}
 					type="text"
 					placeholder="Search books or authors..."
-					class="border-border focus:border-primary focus:ring-primary w-full rounded-lg border bg-white py-3 pr-4 pl-10 text-sm focus:ring-1 focus:outline-none"
+					class="border-border focus:border-primary focus:ring-primary w-full rounded-lg border bg-white py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-1"
 				/>
 				{#if searchQuery}
 					<button
 						type="button"
 						onclick={clearSearch}
-						class="text-content-muted hover:text-content absolute top-1/2 right-3 -translate-y-1/2"
+						class="text-content-muted hover:text-content absolute right-3 top-1/2 -translate-y-1/2"
 						aria-label="Clear search"
 					>
-						<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
+						{@render close({
+							class: 'h-4 w-4',
+							'aria-hidden': 'true'
+						})}
 					</button>
 				{/if}
 			</div>
@@ -129,7 +117,7 @@
 							const form = document.querySelector('form') as HTMLFormElement;
 							form.requestSubmit();
 						}}
-						class="border-border focus:border-primary focus:ring-primary rounded-lg border bg-white px-3 py-2 text-sm focus:ring-1 focus:outline-none"
+						class="border-border focus:border-primary focus:ring-primary rounded-lg border bg-white px-3 py-2 text-sm focus:outline-none focus:ring-1"
 					>
 						<option value="featured">Featured</option>
 						<option value="title">Title</option>
@@ -149,14 +137,10 @@
 							class:text-content-muted={viewMode !== 'grid'}
 							aria-label="Grid view"
 						>
-							<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-								/>
-							</svg>
+							{@render grid({
+								class: 'h-4 w-4',
+								'aria-hidden': 'true'
+							})}
 						</button>
 						<button
 							type="button"
@@ -167,14 +151,10 @@
 							class:text-content-muted={viewMode !== 'list'}
 							aria-label="List view"
 						>
-							<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M4 6h16M4 10h16M4 14h16M4 18h16"
-								/>
-							</svg>
+							{@render list({
+								class: 'h-4 w-4',
+								'aria-hidden': 'true'
+							})}
 						</button>
 					</div>
 				</div>

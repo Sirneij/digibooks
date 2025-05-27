@@ -5,6 +5,18 @@
 	import { page } from '$app/state';
 	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
+	import {
+		alert,
+		book,
+		cart,
+		check,
+		close,
+		loader,
+		minus,
+		plus,
+		shield,
+		trash
+	} from '$lib/components/utils/Icons.svelte';
 
 	let isLoading = $state(false),
 		email = $state('');
@@ -52,26 +64,14 @@
 	{#if checkoutStatus === 'success'}
 		<div class="mb-6 rounded-lg border border-green-200 bg-green-50 p-4" in:fade>
 			<div class="flex items-center">
-				<svg class="mr-2 h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-					<path
-						fill-rule="evenodd"
-						d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-						clip-rule="evenodd"
-					/>
-				</svg>
+				{@render check({ class: 'mr-2 h-5 w-5 text-green-400', 'aria-hidden': 'true' })}
 				<p class="font-medium text-green-800">Payment successful! Thank you for your purchase.</p>
 			</div>
 		</div>
 	{:else if checkoutStatus === 'cancel'}
 		<div class="mb-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4" in:fade>
 			<div class="flex items-center">
-				<svg class="mr-2 h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-					<path
-						fill-rule="evenodd"
-						d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-						clip-rule="evenodd"
-					/>
-				</svg>
+				{@render alert({ class: 'mr-2 h-5 w-5 text-yellow-400', 'aria-hidden': 'true' })}
 				<p class="font-medium text-yellow-800">
 					Checkout was cancelled. Your items are still in your cart.
 				</p>
@@ -83,13 +83,7 @@
 	{#if page.form?.error}
 		<div class="mb-6 rounded-lg border border-red-200 bg-red-50 p-4" in:fade>
 			<div class="flex items-center">
-				<svg class="mr-2 h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-					<path
-						fill-rule="evenodd"
-						d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-						clip-rule="evenodd"
-					/>
-				</svg>
+				{@render close({ class: 'mr-2 h-5 w-5 text-red-400', 'aria-label': 'Close error message' })}
 				<p class="font-medium text-red-800">{page.form.error}</p>
 			</div>
 		</div>
@@ -150,14 +144,7 @@
 												class="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-200 disabled:opacity-50 disabled:hover:bg-gray-100"
 												aria-label="Decrease quantity of {item.book.title}"
 											>
-												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="2"
-														d="M20 12H4"
-													/>
-												</svg>
+												{@render minus({ class: 'h-4 w-4', 'aria-hidden': 'true' })}
 											</button>
 											<span class="flex h-8 w-12 items-center justify-center text-sm font-medium">
 												{item.quantity}
@@ -168,14 +155,7 @@
 												class="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-200 disabled:opacity-50 disabled:hover:bg-gray-100"
 												aria-label="Increase quantity of {item.book.title}"
 											>
-												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="2"
-														d="M12 4v16m8-8H4"
-													/>
-												</svg>
+												{@render plus({ class: 'h-4 w-4', 'aria-hidden': 'true' })}
 											</button>
 										</div>
 
@@ -185,14 +165,7 @@
 											class="rounded-lg p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-700"
 											aria-label="Remove {item.book.title}"
 										>
-											<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-												/>
-											</svg>
+											{@render trash({ class: 'h-5 w-5', 'aria-hidden': 'true' })}
 										</button>
 
 										<!-- Item Total -->
@@ -267,7 +240,7 @@
 								bind:value={email}
 								required
 								disabled={isLoading}
-								class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none disabled:bg-gray-50 disabled:opacity-50"
+								class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-50 disabled:opacity-50"
 								placeholder="your@email.com"
 							/>
 						</div>
@@ -280,21 +253,7 @@
 							>
 								{#if isLoading}
 									<div class="flex items-center justify-center gap-2">
-										<svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-											<circle
-												class="opacity-25"
-												cx="12"
-												cy="12"
-												r="10"
-												stroke="currentColor"
-												stroke-width="4"
-											></circle>
-											<path
-												class="opacity-75"
-												fill="currentColor"
-												d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-											></path>
-										</svg>
+										{@render loader({ class: 'h-5 w-5 animate-spin' })}
 										<span>Processing...</span>
 									</div>
 								{:else}
@@ -313,14 +272,7 @@
 
 					<!-- Security Badge -->
 					<div class="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
-						<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-							/>
-						</svg>
+						{@render shield({ class: 'h-5 w-5 text-blue-600' })}
 						<span>Secure checkout guaranteed</span>
 					</div>
 				</div>
@@ -334,19 +286,7 @@
 				<div
 					class="mx-auto mb-8 flex h-32 w-32 items-center justify-center rounded-full bg-gray-100"
 				>
-					<svg
-						class="h-16 w-16 text-gray-400"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="1.5"
-							d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m4.5-5a2 2 0 104 0m-4 0a2 2 0 014 0"
-						/>
-					</svg>
+					{@render cart({ class: 'h-16 w-16 text-gray-400', 'aria-hidden': 'true' })}
 				</div>
 
 				<h2 class="mb-3 text-2xl font-bold text-gray-900">Your cart is empty</h2>
@@ -359,14 +299,7 @@
 					href="/"
 					class="inline-flex items-center gap-3 rounded-xl bg-blue-600 px-8 py-4 font-medium text-white transition-colors hover:bg-blue-700"
 				>
-					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-						/>
-					</svg>
+					{@render book({ class: 'h-5 w-5', 'aria-hidden': 'true' })}
 					<span>Explore Books</span>
 				</a>
 			</div>

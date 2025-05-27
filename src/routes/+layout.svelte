@@ -3,6 +3,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import '../app.css';
 	import { cartState } from '$lib/states/carts.svelte';
+	import { book, cart, docs, logo } from '$lib/components/utils/Icons.svelte';
 
 	let { children } = $props();
 	let isMobileMenuOpen = $derived(false),
@@ -48,21 +49,12 @@
 					>
 						<!-- Book icon -->
 						<div class="relative">
-							<svg
-								class="h-8 w-8 transform transition-transform duration-300 group-hover:scale-110"
-								fill="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									d="M21 5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5zM17 17H7V7h10v10z"
-								/>
-								<circle cx="9" cy="9" r="1" />
-								<circle cx="15" cy="15" r="1" />
-								<circle cx="9" cy="15" r="1" />
-								<circle cx="15" cy="9" r="1" />
-							</svg>
+							{@render logo({
+								class: 'h-8 w-8 transform transition-transform duration-300 group-hover:scale-110',
+								'aria-hidden': 'true'
+							})}
 							<div
-								class="bg-accent absolute -top-1 -right-1 h-2 w-2 animate-pulse rounded-full"
+								class="bg-accent absolute -right-1 -top-1 h-2 w-2 animate-pulse rounded-full"
 							></div>
 						</div>
 						<span
@@ -90,41 +82,20 @@
 							<div class="flex items-center space-x-2">
 								<!-- Navigation Icons -->
 								{#if item.icon === 'book'}
-									<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-										/>
-									</svg>
+									{@render book({ class: 'h-4 w-4', 'aria-hidden': 'true' })}
 								{:else if item.icon === 'cart'}
 									<div class="relative">
-										<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m4.5-5a2 2 0 104 0m-4 0a2 2 0 014 0"
-											/>
-										</svg>
+										{@render cart({ class: 'h-4 w-4', 'aria-hidden': 'true' })}
 										{#if cartState.items.length > 0}
 											<span
-												class="bg-accent absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white"
+												class="bg-accent absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white"
 											>
 												{cartState.getTotalItems()}
 											</span>
 										{/if}
 									</div>
 								{:else if item.icon === 'purchases'}
-									<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-										/>
-									</svg>
+									{@render docs({ class: 'h-4 w-4', 'aria-hidden': 'true' })}
 								{/if}
 								<span>{item.label}</span>
 							</div>
@@ -144,7 +115,7 @@
 				<div class="md:hidden">
 					<button
 						onclick={() => (isMobileMenuOpen = !isMobileMenuOpen)}
-						class="text-content-muted hover:text-primary hover:bg-surface-muted focus:ring-primary/50 relative rounded-lg p-2 transition-colors duration-200 focus:ring-2 focus:outline-none"
+						class="text-content-muted hover:text-primary hover:bg-surface-muted focus:ring-primary/50 relative rounded-lg p-2 transition-colors duration-200 focus:outline-none focus:ring-2"
 						aria-label="Toggle menu"
 					>
 						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -171,7 +142,7 @@
 			<!-- Mobile Navigation Menu -->
 			{#if isMobileMenuOpen}
 				<div
-					class="border-border mt-2 border-t pt-4 pb-4 md:hidden"
+					class="border-border mt-2 border-t pb-4 pt-4 md:hidden"
 					in:fly={{ y: -10, duration: 200 }}
 					out:fly={{ y: -10, duration: 150 }}
 				>
@@ -189,41 +160,20 @@
 								class:hover:bg-surface-muted={!isActive}
 							>
 								{#if item.icon === 'book'}
-									<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-										/>
-									</svg>
+									{@render book({ class: 'h-5 w-5', 'aria-hidden': 'true' })}
 								{:else if item.icon === 'cart'}
 									<div class="relative">
-										<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m4.5-5a2 2 0 104 0m-4 0a2 2 0 014 0"
-											/>
-										</svg>
+										{@render cart({ class: 'h-5 w-5', 'aria-hidden': 'true' })}
 										{#if cartState.items.length > 0}
 											<span
-												class="bg-accent absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-xs text-white"
+												class="bg-accent absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full text-xs text-white"
 											>
 												{cartState.getTotalItems()}
 											</span>
 										{/if}
 									</div>
 								{:else if item.icon === 'purchases'}
-									<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-										/>
-									</svg>
+									{@render docs({ class: 'h-5 w-5', 'aria-hidden': 'true' })}
 								{/if}
 								<span>{item.label}</span>
 							</a>
@@ -247,7 +197,7 @@
 	>
 		<!-- Decorative top border -->
 		<div
-			class="from-primary via-accent to-secondary absolute top-0 right-0 left-0 h-1 bg-gradient-to-r"
+			class="from-primary via-accent to-secondary absolute left-0 right-0 top-0 h-1 bg-gradient-to-r"
 		></div>
 
 		<div class="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
@@ -255,15 +205,7 @@
 				<!-- Brand Section -->
 				<div class="md:col-span-2">
 					<div class="mb-4 flex items-center space-x-2">
-						<svg class="text-primary h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-							<path
-								d="M21 5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5zM17 17H7V7h10v10z"
-							/>
-							<circle cx="9" cy="9" r="1" />
-							<circle cx="15" cy="15" r="1" />
-							<circle cx="9" cy="15" r="1" />
-							<circle cx="15" cy="9" r="1" />
-						</svg>
+						{@render logo({ class: 'text-primary h-8 w-8', 'aria-hidden': 'true' })}
 						<span class="text-primary text-xl font-bold">DigiBooks</span>
 					</div>
 					<p class="text-content-muted max-w-md text-sm leading-relaxed">

@@ -2,6 +2,7 @@
 	import { formatMoney } from '$lib/utils/helpers';
 	import { fade, fly } from 'svelte/transition';
 	import { goto } from '$app/navigation';
+	import { book, close, docs, loader } from '$lib/components/utils/Icons.svelte';
 
 	let { data } = $props();
 	let isLoading = $state(false);
@@ -97,21 +98,10 @@
 			>
 				{#if isLoading}
 					<div class="flex items-center gap-2">
-						<svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-							<circle
-								class="opacity-25"
-								cx="12"
-								cy="12"
-								r="10"
-								stroke="currentColor"
-								stroke-width="4"
-							></circle>
-							<path
-								class="opacity-75"
-								fill="currentColor"
-								d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-							></path>
-						</svg>
+						{@render loader({
+							class: 'h-4 w-4 animate-spin',
+							'aria-hidden': 'true'
+						})}
 						<span>Looking up...</span>
 					</div>
 				{:else}
@@ -124,13 +114,10 @@
 		{#if data.error}
 			<div class="mt-4 rounded-lg border border-yellow-200 bg-yellow-50 p-4" in:fade>
 				<div class="flex items-center">
-					<svg class="mr-2 h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-						<path
-							fill-rule="evenodd"
-							d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-							clip-rule="evenodd"
-						/>
-					</svg>
+					{@render close({
+						class: 'mr-2 h-5 w-5 text-yellow-400',
+						'aria-hidden': 'true'
+					})}
 					<p class="font-medium text-yellow-800">{data.error}</p>
 				</div>
 			</div>
@@ -247,19 +234,10 @@
 				<div
 					class="mx-auto mb-8 flex h-32 w-32 items-center justify-center rounded-full bg-gray-100"
 				>
-					<svg
-						class="h-16 w-16 text-gray-400"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="1.5"
-							d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-						/>
-					</svg>
+					{@render docs({
+						class: 'h-16 w-16 text-gray-400',
+						'aria-hidden': 'true'
+					})}
 				</div>
 
 				<h3 class="mb-3 text-xl font-semibold text-gray-900">No purchases found</h3>
@@ -275,14 +253,10 @@
 						href="/"
 						class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
 					>
-						<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-							/>
-						</svg>
+						{@render book({
+							class: 'h-4 w-4',
+							'aria-hidden': 'true'
+						})}
 						Browse Books
 					</a>
 				</div>
