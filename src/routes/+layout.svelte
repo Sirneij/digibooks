@@ -4,6 +4,8 @@
 	import '../app.css';
 	import { cartState } from '$lib/states/carts.svelte';
 	import { book, cart, docs, logo } from '$lib/components/utils/Icons.svelte';
+	import { browser } from '$app/environment';
+	import { onNavigate } from '$app/navigation';
 
 	let { children } = $props();
 	let isMobileMenuOpen = $derived(false),
@@ -26,6 +28,19 @@
 		if (href === '/') return page.url.pathname === '/';
 		return page.url.pathname.startsWith(href);
 	}
+
+	const hasViewTransitions = $state(browser && document.startViewTransition);
+
+	onNavigate((navigation) => {
+		if (!hasViewTransitions) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 </script>
 
 <svelte:window bind:scrollY onscroll={handleScroll} />

@@ -3,15 +3,15 @@
 
 @layer base {
 	@theme {
-		--color-primary: rgb(29, 78, 216); /* Blue-700 */
-		--color-primary-hover: rgb(30, 64, 175); /* Blue-800 */
-		--color-secondary: rgb(234, 88, 12); /* Orange-600 */
-		--color-accent: rgb(217, 70, 239); /* Fuchsia-500 */
-		--color-content: rgb(17, 24, 39); /* Formerly text-base, Gray-900 */
-		--color-content-muted: rgb(55, 65, 81); /* Formerly text-muted, Gray-700 */
-		--color-surface: rgb(249, 250, 251); /* Formerly bg-base, Gray-50 */
-		--color-surface-muted: rgb(229, 231, 235); /* Formerly bg-muted, Gray-200 */
-		--color-border: rgb(209, 213, 219); /* Gray-300 */
+		--color-primary: rgb(29, 78, 216); /* blue-700 */
+		--color-primary-hover: rgb(30, 64, 175); /* blue-800 */
+		--color-secondary: rgb(234, 88, 12); /* orange-600 */
+		--color-accent: rgb(217, 70, 239); /* fuchsia-500 */
+		--color-content: rgb(17, 24, 39); /*  gray-900 */
+		--color-content-muted: rgb(55, 65, 81); /* gray-700 */
+		--color-surface: rgb(249, 250, 251); /* gray-50 */
+		--color-surface-muted: rgb(229, 231, 235); /* gray-200 */
+		--color-border: rgb(209, 213, 219); /* gray-300 */
 
 		--font-serif:
 			system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
@@ -20,8 +20,7 @@
 
 	html,
 	body {
-		@apply font-sans; /* Assuming --font-serif is your sans-serif stack */
-		/* For background and text color, use arbitrary values with your CSS variables */
+		@apply font-sans;
 		@apply bg-surface text-content;
 	}
 
