@@ -1,14 +1,16 @@
 import { db } from '$lib/server/db';
 import { books } from '$lib/server/db/schema';
-import { or, type SQL, like, asc, desc } from 'drizzle-orm';
+import { or, and, type SQL, like, asc, desc, sql, count } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ url }) => {
 	const searchQuery = url.searchParams.get('search');
 	const sortBy = url.searchParams.get('sort') || 'featured';
+	const page = parseInt(url.searchParams.get('page') || '1');
+	const limit = 8;
+	const offset = (page - 1) * limit;
 
 	const whereClause: SQL[] = [];
-
 	// Apply search filter
 	if (searchQuery) {
 		whereClause.push(like(books.title, `%${searchQuery}%`), like(books.author, `%${searchQuery}%`));
@@ -34,13 +36,35 @@ export const load: PageServerLoad = async ({ url }) => {
 			orderByClause.push(asc(books.id));
 			break;
 	}
-	const allBooks = await db
-		.select()
-		.from(books)
-		.where(or(...whereClause))
-		.orderBy(...orderByClause);
+
+	// Execute both queries in parallel
+	const [countResult, allBooks] = await Promise.all([
+		// Count query
+		db
+			.select({ count: count() })
+			.from(books)
+			.where(whereClause.length > 0 ? or(...whereClause) : undefined)
+			.then((result) => result[0]),
+
+		// Books query with pagination
+		db
+			.select()
+			.from(books)
+			.where(whereClause.length > 0 ? or(...whereClause) : undefined)
+			.orderBy(...orderByClause)
+			.limit(limit)
+			.offset(offset)
+	]);
 
 	return {
-		books: allBooks || []
+		books: allBooks || [],
+		pagination: {
+			total: countResult.count,
+			page,
+			limit,
+			totalPages: Math.ceil(countResult.count / limit)
+		},
+		searchQuery,
+		sortBy
 	};
 };

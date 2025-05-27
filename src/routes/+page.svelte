@@ -6,6 +6,7 @@
 	import { page } from '$app/state';
 	import type { PageData } from './$types';
 	import { close, grid, list, search } from '$lib/components/utils/Icons.svelte';
+	import Pagination from '$lib/components/utils/Pagination.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -84,13 +85,13 @@
 					bind:value={searchInput}
 					type="text"
 					placeholder="Search books or authors..."
-					class="border-border focus:border-primary focus:ring-primary w-full rounded-lg border bg-white py-3 pr-4 pl-10 text-sm focus:ring-1 focus:outline-none"
+					class="border-border focus:border-primary focus:ring-primary w-full rounded-lg border bg-white py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-1"
 				/>
 				{#if searchQuery}
 					<button
 						type="button"
 						onclick={clearSearch}
-						class="text-content-muted hover:text-content absolute top-1/2 right-3 -translate-y-1/2"
+						class="text-content-muted hover:text-content absolute right-3 top-1/2 -translate-y-1/2"
 						aria-label="Clear search"
 					>
 						{@render close({
@@ -104,7 +105,7 @@
 			<!-- Sort and View Controls -->
 			<div class="flex items-center justify-between">
 				<p class="text-content-muted text-sm">
-					{data.books.length} books
+					{data.pagination.total} books
 				</p>
 
 				<div class="flex items-center space-x-3">
@@ -117,7 +118,7 @@
 							const form = document.querySelector('form') as HTMLFormElement;
 							form.requestSubmit();
 						}}
-						class="border-border focus:border-primary focus:ring-primary rounded-lg border bg-white px-3 py-2 text-sm focus:ring-1 focus:outline-none"
+						class="border-border focus:border-primary focus:ring-primary rounded-lg border bg-white px-3 py-2 text-sm focus:outline-none focus:ring-1"
 					>
 						<option value="featured">Featured</option>
 						<option value="title">Title</option>
@@ -190,5 +191,10 @@
 		<div class="py-16 text-center">
 			<p class="text-content-muted">No books available at the moment</p>
 		</div>
+	{/if}
+
+	<!-- Pagination -->
+	{#if data.pagination.totalPages > 1}
+		<Pagination metadata={data.pagination} />
 	{/if}
 </div>

@@ -1,0 +1,122 @@
+[
+	{
+		"id": 1,
+		"title": "SvelteKit for Beginners",
+		"author": "John Idogun",
+		"description": "A comprehensive guide to SvelteKit that takes you from zero to hero. Learn about routing, server-side rendering, form actions, and how to build full-stack applications with this modern framework. Perfect for developers coming from React or Vue who want to experience the simplicity and power of Svelte.",
+		"cover_image_url": "https://placehold.co/300x450/007acc/white?text=SvelteKit",
+		"price_in_cents": 2999
+	},
+	{
+		"id": 2,
+		"title": "Mastering Tailwind CSS",
+		"author": "John Idogun",
+		"description": "Learn Tailwind CSS from scratch and become a utility-first CSS expert. This book covers everything from basic concepts to advanced techniques like custom components, responsive design patterns, and performance optimization. Includes real-world projects and best practices.",
+		"cover_image_url": "https://placehold.co/300x450/38bdf8/white?text=Tailwind",
+		"price_in_cents": 2499
+	},
+	{
+		"id": 3,
+		"title": "Stripe Integration Made Easy",
+		"author": "John Idogun",
+		"description": "Integrate Stripe payments seamlessly into your web applications. This comprehensive guide covers everything from basic payment processing to advanced features like subscriptions, webhooks, and marketplace payments. Learn to handle edge cases and build robust payment systems.",
+		"cover_image_url": "https://placehold.co/300x450/635bff/white?text=Stripe",
+		"price_in_cents": 3499
+	},
+	{
+		"id": 4,
+		"title": "TypeScript Fundamentals",
+		"author": "Sarah Chen",
+		"description": "Master TypeScript and write better, more maintainable JavaScript. This book starts with the basics of type annotations and gradually builds up to advanced topics like generics, conditional types, and mapped types. Learn how to migrate existing JavaScript projects and leverage TypeScript in popular frameworks.",
+		"cover_image_url": "https://placehold.co/300x450/3178c6/white?text=TypeScript",
+		"price_in_cents": 3199
+	},
+	{
+		"id": 5,
+		"title": "Building Modern APIs with Node.js",
+		"author": "Michael Rodriguez",
+		"description": "Create scalable and secure APIs using Node.js and Express. This practical guide covers API design principles, authentication strategies, database integration, testing methodologies, and deployment best practices. Includes hands-on projects building RESTful and GraphQL APIs.",
+		"cover_image_url": "https://placehold.co/300x450/68a063/white?text=Node.js",
+		"price_in_cents": 3899
+	},
+	{
+		"id": 6,
+		"title": "React Hooks Deep Dive",
+		"author": "Emily Watson",
+		"description": "Unlock the full potential of React Hooks and modern React development. From useState and useEffect to custom hooks and advanced patterns, this book provides deep insights into functional React components. Learn performance optimization techniques and common pitfalls to avoid.",
+		"cover_image_url": "https://placehold.co/300x450/61dafb/white?text=React",
+		"price_in_cents": 2899
+	},
+	{
+		"id": 7,
+		"title": "Database Design and PostgreSQL",
+		"author": "David Kim",
+		"description": "Learn database design principles and master PostgreSQL, one of the most powerful open-source databases. This comprehensive guide covers normalization, indexing, query optimization, advanced SQL features, and performance tuning. Perfect for developers who want to build efficient data-driven applications.",
+		"cover_image_url": "https://placehold.co/300x450/336791/white?text=PostgreSQL",
+		"price_in_cents": 4199
+	},
+	{
+		"id": 8,
+		"title": "Vue 3 Composition API",
+		"author": "Lisa Martinez",
+		"description": "Discover the power of Vue 3's Composition API and build more maintainable applications. This book explores reactive programming concepts, component composition patterns, and how to migrate from the Options API. Includes practical examples and real-world project implementations.",
+		"cover_image_url": "https://placehold.co/300x450/4fc08d/white?text=Vue.js",
+		"price_in_cents": 2699
+	},
+	{
+		"id": 9,
+		"title": "Docker for Developers",
+		"author": "Alex Thompson",
+		"description": "Containerize your applications with Docker and streamline your development workflow. Learn container concepts, Dockerfile best practices, multi-stage builds, Docker Compose for local development, and container orchestration basics. Essential for modern software development teams.",
+		"cover_image_url": "https://placehold.co/300x450/2496ed/white?text=Docker",
+		"price_in_cents": 3299
+	},
+	{
+		"id": 10,
+		"title": "AWS Cloud Fundamentals",
+		"author": "Jennifer Park",
+		"description": "Get started with Amazon Web Services and cloud computing. This beginner-friendly guide covers core AWS services like EC2, S3, RDS, and Lambda. Learn cloud architecture patterns, security best practices, and cost optimization strategies. Includes hands-on exercises and real deployment scenarios.",
+		"cover_image_url": "https://placehold.co/300x450/ff9900/white?text=AWS",
+		"price_in_cents": 4499
+	},
+	{
+		"id": 11,
+		"title": "GraphQL Schema Design",
+		"author": "Robert Garcia",
+		"description": "Design efficient and scalable GraphQL schemas that evolve with your application. This advanced guide covers schema design patterns, federation strategies, performance optimization, and security considerations. Learn to build production-ready GraphQL APIs that teams love to use.",
+		"cover_image_url": "https://placehold.co/300x450/e10098/white?text=GraphQL",
+		"price_in_cents": 3799
+	},
+	{
+		"id": 12,
+		"title": "Python for Data Science",
+		"author": "Maria Gonzalez",
+		"description": "Harness Python's power for data analysis and machine learning. This comprehensive guide covers pandas, NumPy, matplotlib, and scikit-learn. Learn data cleaning techniques, statistical analysis, visualization best practices, and how to build predictive models. Perfect for aspiring data scientists.",
+		"cover_image_url": "https://placehold.co/300x450/3776ab/white?text=Python",
+		"price_in_cents": 3999
+	},
+	{
+		"id": 13,
+		"title": "Rust Programming Essentials",
+		"author": "Thomas Anderson",
+		"description": "Master systems programming with Rust and its unique ownership model. This book covers memory safety, concurrency, error handling, and performance optimization. Learn to build fast and reliable applications while avoiding common programming pitfalls. Ideal for developers coming from C++ or other systems languages.",
+		"cover_image_url": "https://placehold.co/300x450/000000/white?text=Rust",
+		"price_in_cents": 3599
+	},
+	{
+		"id": 14,
+		"title": "Kubernetes in Action",
+		"author": "Kevin Williams",
+		"description": "Deploy and manage containerized applications at scale with Kubernetes. This practical guide covers pod management, services, ingress controllers, persistent storage, and cluster administration. Learn deployment strategies, monitoring techniques, and troubleshooting common issues in production environments.",
+		"cover_image_url": "https://placehold.co/300x450/326ce5/white?text=Kubernetes",
+		"price_in_cents": 4299
+	},
+	{
+		"id": 15,
+		"title": "Web Security Handbook",
+		"author": "Amanda Foster",
+		"description": "Secure your web applications against modern threats and vulnerabilities. This comprehensive security guide covers OWASP Top 10, authentication mechanisms, encryption, secure coding practices, and penetration testing basics. Essential reading for developers who want to build secure applications from the ground up.",
+		"cover_image_url": "https://placehold.co/300x450/dc2626/white?text=Security",
+		"price_in_cents": 3699
+	}
+]

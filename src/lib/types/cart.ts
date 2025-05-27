@@ -14,3 +14,10 @@ export interface SessionMetadata {
 	itemCount?: string; // Number of items in the cart
 	totalAmount?: string; // Total amount in cents as a string
 }
+
+export interface PaginationMetadata {
+	page: number;
+	limit: number;
+	total: number;
+	totalPages: number;
+}
