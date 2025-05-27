@@ -17,9 +17,12 @@
 		shield,
 		trash
 	} from '$lib/components/utils/Icons.svelte';
+	import { goto } from '$app/navigation';
 
 	let isLoading = $state(false),
-		email = $state('');
+		email = $state(''),
+		redirectCountdown = $state(0),
+		isRedirecting = $state(false);
 
 	// Check for checkout status in URL params
 	const checkoutStatus = $derived(page.url.searchParams.get('checkout'));
@@ -41,6 +44,21 @@
 		if (checkoutStatus === 'success') {
 			// Clear cart on successful checkout
 			cartState.clear();
+
+			// Start countdown and redirect
+			isRedirecting = true;
+			redirectCountdown = 5;
+
+			const countdownInterval = setInterval(() => {
+				redirectCountdown--;
+				if (redirectCountdown <= 0) {
+					clearInterval(countdownInterval);
+					goto('/purchases');
+				}
+			}, 1000);
+
+			// Cleanup interval if component is destroyed
+			return () => clearInterval(countdownInterval);
 		}
 	});
 </script>
@@ -62,10 +80,27 @@
 
 	<!-- Checkout Status Messages -->
 	{#if checkoutStatus === 'success'}
-		<div class="mb-6 rounded-lg border border-green-200 bg-green-50 p-4" in:fade>
-			<div class="flex items-center">
-				{@render check({ class: 'mr-2 h-5 w-5 text-green-400', 'aria-hidden': 'true' })}
-				<p class="font-medium text-green-800">Payment successful! Thank you for your purchase.</p>
+		<div class="mb-6 rounded-lg border border-green-200 bg-green-50 p-6" in:fade>
+			<div class="flex items-start">
+				{@render check({ class: 'mr-3 mt-0.5 h-6 w-6 text-green-400', 'aria-hidden': 'true' })}
+				<div class="flex-1">
+					<h3 class="mb-2 font-medium text-green-800">Payment Successful!</h3>
+					<p class="mb-3 text-green-700">
+						Thank you for your purchase. Your books have been added to your library.
+					</p>
+					{#if isRedirecting}
+						<div class="flex items-center gap-2 text-sm text-green-600">
+							{@render loader({ class: 'h-4 w-4 animate-spin' })}
+							<span>Redirecting to your purchases in {redirectCountdown} seconds...</span>
+						</div>
+						<button
+							onclick={() => goto('/purchases')}
+							class="mt-3 text-sm font-medium text-green-600 underline hover:text-green-500"
+						>
+							Go to purchases now
+						</button>
+					{/if}
+				</div>
 			</div>
 		</div>
 	{:else if checkoutStatus === 'cancel'}
