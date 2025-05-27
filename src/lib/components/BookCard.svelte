@@ -79,7 +79,7 @@
 					<button
 						onclick={handleAddToCart}
 						disabled={isLoading}
-						class="group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:cursor-not-allowed disabled:opacity-50"
+						class="group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl focus:ring-2 focus:ring-blue-500/50 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						<span class="relative z-10 flex items-center space-x-2">
 							{#if isLoading}
@@ -136,7 +136,7 @@
 
 			<!-- Floating quick add button -->
 			{#if isHovered}
-				<div class="absolute right-4 top-4" in:scale={{ duration: 300, start: 0.8 }}>
+				<div class="absolute top-4 right-4" in:scale={{ duration: 300, start: 0.8 }}>
 					<button
 						onclick={handleAddToCart}
 						disabled={isLoading}
@@ -161,7 +161,7 @@
 
 		<!-- Content Section -->
 		<div class="relative flex flex-col p-6">
-			<h3 class="mb-2 line-clamp-2 text-lg font-bold leading-tight text-slate-900">
+			<h3 class="mb-2 line-clamp-2 text-lg leading-tight font-bold text-slate-900">
 				<a href="/{book.id}" class="transition-colors duration-200 hover:text-blue-600">
 					{book.title}
 				</a>
@@ -186,7 +186,7 @@
 				<button
 					onclick={handleAddToCart}
 					disabled={isLoading}
-					class="group/btn relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-blue-700 hover:to-purple-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:cursor-not-allowed disabled:opacity-50"
+					class="group/btn relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-blue-700 hover:to-purple-700 hover:shadow-xl focus:ring-2 focus:ring-blue-500/50 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 				>
 					<span class="relative z-10 flex items-center justify-center space-x-2">
 						{#if isLoading}

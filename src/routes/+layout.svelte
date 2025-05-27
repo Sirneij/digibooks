@@ -69,7 +69,7 @@
 								'aria-hidden': 'true'
 							})}
 							<div
-								class="bg-accent absolute -right-1 -top-1 h-2 w-2 animate-pulse rounded-full"
+								class="bg-accent absolute -top-1 -right-1 h-2 w-2 animate-pulse rounded-full"
 							></div>
 						</div>
 						<span
@@ -103,7 +103,7 @@
 										{@render cart({ class: 'h-4 w-4', 'aria-hidden': 'true' })}
 										{#if cartState.items.length > 0}
 											<span
-												class="bg-accent absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white"
+												class="bg-accent absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white"
 											>
 												{cartState.getTotalItems()}
 											</span>
@@ -130,7 +130,7 @@
 				<div class="md:hidden">
 					<button
 						onclick={() => (isMobileMenuOpen = !isMobileMenuOpen)}
-						class="text-content-muted hover:text-primary hover:bg-surface-muted focus:ring-primary/50 relative rounded-lg p-2 transition-colors duration-200 focus:outline-none focus:ring-2"
+						class="text-content-muted hover:text-primary hover:bg-surface-muted focus:ring-primary/50 relative rounded-lg p-2 transition-colors duration-200 focus:ring-2 focus:outline-none"
 						aria-label="Toggle menu"
 					>
 						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -157,7 +157,7 @@
 			<!-- Mobile Navigation Menu -->
 			{#if isMobileMenuOpen}
 				<div
-					class="border-border mt-2 border-t pb-4 pt-4 md:hidden"
+					class="border-border mt-2 border-t pt-4 pb-4 md:hidden"
 					in:fly={{ y: -10, duration: 200 }}
 					out:fly={{ y: -10, duration: 150 }}
 				>
@@ -181,7 +181,7 @@
 										{@render cart({ class: 'h-5 w-5', 'aria-hidden': 'true' })}
 										{#if cartState.items.length > 0}
 											<span
-												class="bg-accent absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full text-xs text-white"
+												class="bg-accent absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-xs text-white"
 											>
 												{cartState.getTotalItems()}
 											</span>
@@ -212,7 +212,7 @@
 	>
 		<!-- Decorative top border -->
 		<div
-			class="from-primary via-accent to-secondary absolute left-0 right-0 top-0 h-1 bg-gradient-to-r"
+			class="from-primary via-accent to-secondary absolute top-0 right-0 left-0 h-1 bg-gradient-to-r"
 		></div>
 
 		<div class="container mx-auto px-4 py-12 sm:px-6 lg:px-8">

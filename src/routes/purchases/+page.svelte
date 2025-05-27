@@ -86,7 +86,7 @@
 					bind:value={email}
 					required
 					disabled={isLoading}
-					class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-50 disabled:opacity-50"
+					class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none disabled:bg-gray-50 disabled:opacity-50"
 					placeholder="Enter your email address"
 				/>
 			</div>
@@ -94,7 +94,7 @@
 			<button
 				type="submit"
 				disabled={isLoading || !email.trim()}
-				class="whitespace-nowrap rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-400"
+				class="rounded-lg bg-blue-600 px-6 py-3 font-medium whitespace-nowrap text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-400"
 			>
 				{#if isLoading}
 					<div class="flex items-center gap-2">

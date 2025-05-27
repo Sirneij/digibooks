@@ -240,7 +240,7 @@
 								bind:value={email}
 								required
 								disabled={isLoading}
-								class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-50 disabled:opacity-50"
+								class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none disabled:bg-gray-50 disabled:opacity-50"
 								placeholder="your@email.com"
 							/>
 						</div>
