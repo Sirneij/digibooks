@@ -1,6 +1,6 @@
 import { db } from '$lib/server/db';
 import { books } from '$lib/server/db/schema';
-import { or, and, type SQL, like, asc, desc, sql, count } from 'drizzle-orm';
+import { or, type SQL, like, asc, desc, count } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ url }) => {

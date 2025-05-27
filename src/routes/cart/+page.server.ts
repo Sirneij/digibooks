@@ -22,7 +22,12 @@ export const actions: Actions = {
 			metadata: {
 				userId: 'guest', // Replace with actual user ID if authenticated
 				timestamp: new Date().toISOString(),
-				bookIds: cartItems.map((item) => item.book.id).join(','),
+				books: JSON.stringify(
+					cartItems.map((item) => ({
+						bookId: item.book.id.toString(),
+						quantity: item.quantity
+					}))
+				),
 				itemCount: cartItems.reduce((total, item) => total + item.quantity, 0).toString(),
 				totalAmount: cartItems
 					.reduce((total, item) => total + item.book.priceInCents * item.quantity, 0)

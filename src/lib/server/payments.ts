@@ -1,8 +1,6 @@
 import { STRIPE_SECRET_KEY } from '$env/static/private';
 import type { CartItem, SessionMetadata } from '$lib/types/cart';
 import Stripe from 'stripe';
-import { db } from './db';
-import { purchases } from './db/schema';
 
 export const stripe = new Stripe(STRIPE_SECRET_KEY);
 
@@ -59,18 +57,6 @@ export async function createCheckoutSession({
 		}
 
 		const session = await stripe.checkout.sessions.create(sessionParams);
-
-		// Create individual purchase records for each book
-		const purchaseRecords = items.map((item) => ({
-			quantity: item.quantity,
-			customerEmail: customerEmail || 'guest',
-			bookId: item.book.id,
-			purchasedAt: new Date(),
-			stripeCheckoutSessionId: session.id
-		}));
-
-		// Insert all purchase records
-		await db.insert(purchases).values(purchaseRecords);
 
 		return {
 			success: true,

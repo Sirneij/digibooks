@@ -4,7 +4,7 @@ import { purchases } from '$lib/server/db/schema';
 import { stripe } from '$lib/server/payments';
 import type { SessionMetadata } from '$lib/types/cart.js';
 import { error, json } from '@sveltejs/kit';
-import { and, eq, inArray } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 
 export async function POST({ request }) {
 	const body = await request.text();
@@ -21,20 +21,52 @@ export async function POST({ request }) {
 			const session = event.data.object;
 			const metadata = session.metadata as unknown as SessionMetadata;
 
-			if (!metadata.bookIds || !metadata.timestamp) {
+			if (!metadata.books || !metadata.timestamp) {
 				error(400, 'Missing required metadata');
 			}
 
-			const bookIds = metadata.bookIds.split(',').map((id) => Number(id.trim()));
+			const items = JSON.parse(metadata.books) as Array<{ bookId: string; quantity: number }>;
+			const customerEmail = session.customer_details?.email || session.customer_email || 'unknown';
 
-			// Update the purchase record in the database by setting `isCompleted` to true
-			// for purchases that match the book IDs and sessionid
-			await db
-				.update(purchases)
-				.set({ isCompleted: true })
-				.where(
-					and(inArray(purchases.bookId, bookIds), eq(purchases.stripeCheckoutSessionId, session.id))
-				);
+			try {
+				const purchaseRecords = [];
+
+				// Check each item individually to avoid duplicates from webhook retries
+				for (const item of items) {
+					const existingPurchase = await db
+						.select()
+						.from(purchases)
+						.where(
+							and(
+								eq(purchases.stripeCheckoutSessionId, session.id),
+								eq(purchases.bookId, parseInt(item.bookId))
+							)
+						)
+						.limit(1);
+
+					if (existingPurchase.length === 0) {
+						purchaseRecords.push({
+							quantity: item.quantity,
+							customerEmail,
+							bookId: parseInt(item.bookId),
+							stripeCheckoutSessionId: session.id,
+							isCompleted: true
+						});
+					}
+				}
+
+				if (purchaseRecords.length > 0) {
+					await db.insert(purchases).values(purchaseRecords);
+					console.log(
+						`✅ Created ${purchaseRecords.length} new purchase records for session ${session.id}`
+					);
+				} else {
+					console.log(`ℹ️ All purchases already exist for session ${session.id}`);
+				}
+			} catch (dbError) {
+				console.error('Database error creating purchases:', dbError);
+				error(500, 'Failed to create purchase records');
+			}
 		}
 
 		return json({ received: true });
