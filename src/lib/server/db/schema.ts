@@ -21,7 +21,8 @@ export const purchases = sqliteTable('purchases', {
 	purchasedAt: integer('purchased_at', { mode: 'timestamp' })
 		.notNull()
 		.default(sql`(strftime('%s', 'now'))`),
-	stripeCheckoutSessionId: text('stripe_checkout_session_id').notNull().unique()
+	stripeCheckoutSessionId: text('stripe_checkout_session_id').notNull().unique(),
+	isCompleted: integer('is_completed', { mode: 'boolean' }).notNull().default(false) // Default to false, indicating the purchase is not completed
 });
 
 export type Book = typeof books.$inferSelect;

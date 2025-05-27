@@ -60,7 +60,7 @@
 								type="number"
 								min="1"
 								max="99"
-								class="text-content w-16 border-0 py-2 text-center focus:outline-none focus:ring-0"
+								class="text-content w-16 border-0 py-2 text-center focus:ring-0 focus:outline-none"
 							/>
 							<button
 								onclick={() => (quantity = Math.min(99, quantity + 1))}
@@ -74,7 +74,7 @@
 
 					<button
 						onclick={handleAddToCart}
-						class="bg-primary hover:bg-primary-hover focus:ring-primary/50 w-full rounded-lg px-6 py-3 text-lg font-medium text-white transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 sm:w-auto"
+						class="bg-primary hover:bg-primary-hover focus:ring-primary/50 w-full rounded-lg px-6 py-3 text-lg font-medium text-white transition-all duration-200 hover:scale-105 focus:ring-2 focus:outline-none sm:w-auto"
 					>
 						Add {quantity > 1 ? `${quantity} ` : ''}to Cart
 					</button>

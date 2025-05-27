@@ -1,7 +1,5 @@
-import { browser } from '$app/environment';
 import type { Book } from '$lib/server/db/schema';
 import { cartState } from '$lib/states/carts.svelte';
-import type { CartItem } from '$lib/types/cart';
 
 /**
  * Format a number as currency

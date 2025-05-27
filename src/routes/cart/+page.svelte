@@ -1,8 +1,16 @@
 <script lang="ts">
 	import { formatMoney } from '$lib/utils/helpers';
 	import { fade, fly } from 'svelte/transition';
-	import { goto } from '$app/navigation';
 	import { cartState } from '$lib/states/carts.svelte';
+	import { page } from '$app/state';
+	import { enhance } from '$app/forms';
+	import { onMount } from 'svelte';
+
+	let isLoading = $state(false),
+		email = $state('');
+
+	// Check for checkout status in URL params
+	const checkoutStatus = $derived(page.url.searchParams.get('checkout'));
 
 	function updateQuantity(bookId: number, quantity: number) {
 		cartState.updateQuantity(bookId, quantity);
@@ -16,9 +24,13 @@
 		cartState.clear();
 	}
 
-	function proceedToCheckout() {
-		goto('/checkout');
-	}
+	// Handle checkout success/cancel
+	onMount(() => {
+		if (checkoutStatus === 'success') {
+			// Clear cart on successful checkout
+			cartState.clear();
+		}
+	});
 </script>
 
 <svelte:head>
@@ -35,6 +47,53 @@
 				: `${cartState.getTotalItems()} ${cartState.getTotalItems() === 1 ? 'item' : 'items'}`}
 		</p>
 	</div>
+
+	<!-- Checkout Status Messages -->
+	{#if checkoutStatus === 'success'}
+		<div class="mb-6 rounded-lg border border-green-200 bg-green-50 p-4" in:fade>
+			<div class="flex items-center">
+				<svg class="mr-2 h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+					<path
+						fill-rule="evenodd"
+						d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+						clip-rule="evenodd"
+					/>
+				</svg>
+				<p class="font-medium text-green-800">Payment successful! Thank you for your purchase.</p>
+			</div>
+		</div>
+	{:else if checkoutStatus === 'cancel'}
+		<div class="mb-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4" in:fade>
+			<div class="flex items-center">
+				<svg class="mr-2 h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+					<path
+						fill-rule="evenodd"
+						d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+						clip-rule="evenodd"
+					/>
+				</svg>
+				<p class="font-medium text-yellow-800">
+					Checkout was cancelled. Your items are still in your cart.
+				</p>
+			</div>
+		</div>
+	{/if}
+
+	<!-- Form Error -->
+	{#if page.form?.error}
+		<div class="mb-6 rounded-lg border border-red-200 bg-red-50 p-4" in:fade>
+			<div class="flex items-center">
+				<svg class="mr-2 h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+					<path
+						fill-rule="evenodd"
+						d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+						clip-rule="evenodd"
+					/>
+				</svg>
+				<p class="font-medium text-red-800">{page.form.error}</p>
+			</div>
+		</div>
+	{/if}
 
 	{#if cartState.items.length > 0}
 		<div class="grid grid-cols-1 gap-8 lg:grid-cols-12">
@@ -177,22 +236,80 @@
 						</div>
 					</div>
 
-					<!-- Action Buttons -->
-					<div class="space-y-3">
-						<button
-							onclick={proceedToCheckout}
-							class="w-full rounded-xl bg-blue-600 px-4 py-3 font-medium text-white transition-colors hover:bg-blue-700"
-						>
-							Proceed to Checkout
-						</button>
+					<!-- Checkout Form -->
+					<form
+						method="POST"
+						action="?/checkout"
+						use:enhance={() => {
+							isLoading = true;
+							return async ({ update, result }) => {
+								await update();
+								isLoading = false;
+								if (result.type === 'redirect') {
+									window.location.href = result.location;
+								}
+							};
+						}}
+						class="space-y-4"
+					>
+						<!-- Hidden cart items -->
+						<input type="hidden" name="cartItems" value={JSON.stringify(cartState.items)} />
 
-						<a
-							href="/"
-							class="block w-full rounded-xl bg-gray-100 px-4 py-3 text-center font-medium text-gray-800 transition-colors hover:bg-gray-200"
-						>
-							Continue Shopping
-						</a>
-					</div>
+						<!-- Email Input -->
+						<div>
+							<label for="email" class="mb-2 block text-sm font-medium text-gray-700">
+								Email Address
+							</label>
+							<input
+								type="email"
+								id="email"
+								name="email"
+								bind:value={email}
+								required
+								disabled={isLoading}
+								class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none disabled:bg-gray-50 disabled:opacity-50"
+								placeholder="your@email.com"
+							/>
+						</div>
+						<!-- Action Buttons -->
+						<div class="space-y-3">
+							<button
+								type="submit"
+								disabled={isLoading || cartState.items.length === 0 || !email.trim()}
+								class="w-full rounded-xl bg-blue-600 px-4 py-3 font-medium text-white transition-all duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-400"
+							>
+								{#if isLoading}
+									<div class="flex items-center justify-center gap-2">
+										<svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+											<circle
+												class="opacity-25"
+												cx="12"
+												cy="12"
+												r="10"
+												stroke="currentColor"
+												stroke-width="4"
+											></circle>
+											<path
+												class="opacity-75"
+												fill="currentColor"
+												d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+											></path>
+										</svg>
+										<span>Processing...</span>
+									</div>
+								{:else}
+									Proceed to Checkout
+								{/if}
+							</button>
+
+							<a
+								href="/"
+								class="block w-full rounded-xl bg-gray-100 px-4 py-3 text-center font-medium text-gray-800 transition-colors hover:bg-gray-200"
+							>
+								Continue Shopping
+							</a>
+						</div>
+					</form>
 
 					<!-- Security Badge -->
 					<div class="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
@@ -252,21 +369,6 @@
 					</svg>
 					<span>Explore Books</span>
 				</a>
-
-				<!-- Popular Categories -->
-				<div class="mt-12">
-					<p class="mb-4 text-sm text-gray-500">Popular categories</p>
-					<div class="flex flex-wrap justify-center gap-2">
-						{#each ['Fiction', 'Science', 'History', 'Technology', 'Biography'] as category}
-							<a
-								href="/?search={category}"
-								class="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-600 transition-colors hover:border-blue-300 hover:text-blue-600"
-							>
-								{category}
-							</a>
-						{/each}
-					</div>
-				</div>
 			</div>
 		</div>
 	{/if}

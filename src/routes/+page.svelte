@@ -75,7 +75,7 @@
 			<!-- Search -->
 			<div class="relative">
 				<svg
-					class="text-content-muted absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
+					class="text-content-muted absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
@@ -92,13 +92,13 @@
 					bind:value={searchInput}
 					type="text"
 					placeholder="Search books or authors..."
-					class="border-border focus:border-primary focus:ring-primary w-full rounded-lg border bg-white py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-1"
+					class="border-border focus:border-primary focus:ring-primary w-full rounded-lg border bg-white py-3 pr-4 pl-10 text-sm focus:ring-1 focus:outline-none"
 				/>
 				{#if searchQuery}
 					<button
 						type="button"
 						onclick={clearSearch}
-						class="text-content-muted hover:text-content absolute right-3 top-1/2 -translate-y-1/2"
+						class="text-content-muted hover:text-content absolute top-1/2 right-3 -translate-y-1/2"
 						aria-label="Clear search"
 					>
 						<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -129,7 +129,7 @@
 							const form = document.querySelector('form') as HTMLFormElement;
 							form.requestSubmit();
 						}}
-						class="border-border focus:border-primary focus:ring-primary rounded-lg border bg-white px-3 py-2 text-sm focus:outline-none focus:ring-1"
+						class="border-border focus:border-primary focus:ring-primary rounded-lg border bg-white px-3 py-2 text-sm focus:ring-1 focus:outline-none"
 					>
 						<option value="featured">Featured</option>
 						<option value="title">Title</option>
